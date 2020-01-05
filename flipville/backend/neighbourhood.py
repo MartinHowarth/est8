@@ -10,15 +10,17 @@ from flipville.backend.street import Street
 
 @dataclass
 class Neighbourhood:
+    definition: NeighbourhoodDefinition
     streets: List[Street]
 
     @classmethod
     def new(cls, definition: NeighbourhoodDefinition) -> "Neighbourhood":
         return cls(
+            definition=definition,
             streets=[
                 Street.new(street_definition)
                 for street_definition in definition.streets
-            ]
+            ],
         )
 
     def assert_place_house_is_valid(self, street_no: int) -> None:

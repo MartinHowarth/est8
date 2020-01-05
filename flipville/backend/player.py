@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import Dict, Tuple
+from dataclasses import dataclass, field
+from typing import Dict, Tuple, List, Optional
 
 from flipville.backend.errors import (
     InvestmentError,
@@ -20,6 +20,7 @@ class Player:
     num_pools: int = 0
     num_roundabouts: int = 0
     num_temp_agencies: int = 0
+    plans_completed: List[Optional[int]] = field(default_factory=list)
 
     @classmethod
     def new(cls, definition: GameDefinition) -> "Player":
@@ -30,6 +31,7 @@ class Player:
             game_definition=definition,
             neighbourhood=Neighbourhood.new(definition.neighbourhood),
             investments=investments,
+            plans_completed=[None for _ in definition.plans],
         )
 
     def assert_place_house_is_valid(self, house: House) -> None:

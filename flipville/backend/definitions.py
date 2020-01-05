@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Tuple, Dict, Iterable
+from random import choice, shuffle
+from typing import Tuple, Dict, Iterable, Optional, Generator
 
 
 class ActionEnum(Enum):
@@ -11,13 +12,19 @@ class ActionEnum(Enum):
     park = auto()
     invest = auto()
     pool = auto()
-    temp_agency = auto()
+    temp = auto()
 
 
 @dataclass(frozen=True)
 class CardDefinition:
     number: int
     action: ActionEnum
+
+
+@dataclass
+class CardPair:
+    number_card: CardDefinition = None
+    action_card: CardDefinition = None
 
 
 @dataclass(frozen=True)
@@ -39,6 +46,64 @@ class DeckDefinition:
             pool_numbers=(3, 4, 6, 7, 8, 9, 10, 12, 13),
             temp_agency_numbers=(3, 4, 6, 7, 8, 8, 9, 10, 12, 13),
         )
+
+    @property
+    def deck_size(self) -> int:
+        return sum(
+            (
+                len(self.bis_numbers),
+                len(self.fence_numbers),
+                len(self.park_numbers),
+                len(self.invest_numbers),
+                len(self.pool_numbers),
+                len(self.temp_agency_numbers),
+            )
+        )
+
+    def ordered_card_generator(self) -> Generator[CardDefinition, None, None]:
+        for number in self.bis_numbers:
+            yield CardDefinition(number=number, action=ActionEnum.bis)
+        for number in self.fence_numbers:
+            yield CardDefinition(number=number, action=ActionEnum.fence)
+        for number in self.park_numbers:
+            yield CardDefinition(number=number, action=ActionEnum.park)
+        for number in self.pool_numbers:
+            yield CardDefinition(number=number, action=ActionEnum.pool)
+        for number in self.invest_numbers:
+            yield CardDefinition(number=number, action=ActionEnum.invest)
+        for number in self.temp_agency_numbers:
+            yield CardDefinition(number=number, action=ActionEnum.temp)
+
+    def random_card_generator(
+        self, no_reshuffle_last_n: int = 0
+    ) -> Generator[CardDefinition, None, None]:
+        """
+        A generator that returns each defined card in a random order.
+
+        When trying to draw more cards than there are in the deck, all of the cards are
+        shuffled again and then more are picked.
+        
+        :param no_reshuffle_last_n: Number of cards that were last drawn to not re-shuffle into 
+            the deck. This simulates behaviour of leaving cards on the table while reshuffling
+            the rest.
+        """
+        all_cards = list(self.ordered_card_generator())
+        last_n_cards = []
+
+        while True:
+            # Deal out the current deck in a random order.
+            shuffle(all_cards)
+            for card in all_cards:
+                yield card
+
+            # Add back in the previous set of last cards to the front.
+            all_cards = last_n_cards + all_cards
+
+            # Record the last cards dealt from the end
+            last_n_cards = all_cards[-no_reshuffle_last_n:]
+
+            # Remove those cards from the current deck
+            all_cards = all_cards[: len(all_cards) - no_reshuffle_last_n]
 
 
 @dataclass(frozen=True)
@@ -199,7 +264,14 @@ class PlanDeckDefinition:
 
     @classmethod
     def default(cls) -> "PlanDeckDefinition":
-        return cls(no_1=tuple(), no_2=tuple(), no_3=tuple(),)
+        return cls(
+            no_1=(PlanDefinition((6, 2)),),
+            no_2=(PlanDefinition((8, 3)),),
+            no_3=(PlanDefinition((11, 5)),),
+        )
+
+    def pick_3(self) -> Tuple[PlanDefinition, PlanDefinition, PlanDefinition]:
+        return choice(self.no_1), choice(self.no_2), choice(self.no_3)
 
 
 @dataclass(frozen=True)
@@ -207,7 +279,8 @@ class GameDefinition:
     neighbourhood: NeighbourhoodDefinition
     scoring: ScoringDefinition
     deck: DeckDefinition
-    plan_deck: PlanDeckDefinition
+    plans: Tuple[PlanDefinition, PlanDefinition, PlanDefinition]
+    num_cards_drawn_at_once: int = 3
 
     @classmethod
     def default(cls) -> "GameDefinition":
@@ -215,7 +288,7 @@ class GameDefinition:
             neighbourhood=NeighbourhoodDefinition.default(),
             scoring=ScoringDefinition.default(),
             deck=DeckDefinition.default(),
-            plan_deck=PlanDeckDefinition.default(),
+            plans=PlanDeckDefinition.default().pick_3(),
         )
 
     def can_have_pool_at(self, street_no: int, plot_no: int) -> bool:
@@ -227,3 +300,28 @@ class GameDefinition:
 
     def max_investments_in_estate_size(self, estate_size: int) -> int:
         return len(self.scoring.invest.map[estate_size]) - 1
+
+    def generate_card_pairs(self) -> Generator[Tuple[CardPair, ...], None, None]:
+        """
+        Generate tuples of CardPairs representing the deck being drawn from.
+
+        The number card of the pair is used as the action card in the next pair.
+        """
+        random_card_gen = self.deck.random_card_generator()
+
+        def next_n_cards() -> Tuple[CardDefinition]:
+            return tuple(
+                (next(random_card_gen) for _ in range(self.num_cards_drawn_at_once))
+            )
+
+        action_cards = next_n_cards()
+
+        while True:
+            number_cards = next_n_cards()
+            yield tuple(
+                (
+                    CardPair(number_card=number_cards[i], action_card=action_cards[i])
+                    for i in range(self.num_cards_drawn_at_once)
+                )
+            )
+            action_cards = number_cards
