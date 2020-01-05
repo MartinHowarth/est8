@@ -7,6 +7,7 @@ from shimmer.display.components.box import ActiveBox
 
 from ..backend.errors import FlipvilleError
 from ..backend.definitions import ActionEnum
+from ..backend.player import Player
 from ..backend.house import House
 from ..backend.neighbourhood import Neighbourhood
 from .street import StreetDisplay
@@ -18,16 +19,20 @@ log = logging.getLogger(__name__)
 
 
 class NeighbourhoodDisplay(ActiveBox):
-    def __init__(self, neighbourhood: Neighbourhood, input_handler: InputHandler):
+    def __init__(self, player: Player, input_handler: InputHandler):
         super(NeighbourhoodDisplay, self).__init__()
-        self.neighbourhood = neighbourhood
+        self.player = player
         self.input_handler: InputHandler = input_handler
         self.streets: List[StreetDisplay] = [
             StreetDisplay(street, index, self.on_plot_click)
-            for index, street in enumerate(self.neighbourhood.streets)
+            for index, street in enumerate(self.player.neighbourhood.streets)
         ]
+        max_x = max(
+            [street.bounding_rect_of_children().width for street in self.streets]
+        )
         for index, street in enumerate(reversed(self.streets)):
-            street.position = 0, index * 150
+            width = street.bounding_rect_of_children().width
+            street.position = max_x - width, index * 200
             self.add(street)
 
     def make_chosen_house(self, street_index: int, plot_index: int) -> Optional[House]:
@@ -37,7 +42,7 @@ class NeighbourhoodDisplay(ActiveBox):
             return House(is_bis=True)
         elif self.input_handler.chosen_card_pair is not None:
             action = self.input_handler.chosen_card_pair.action_card.action
-            can_have_pool = self.neighbourhood.definition.can_have_pool_at(
+            can_have_pool = self.player.neighbourhood.definition.can_have_pool_at(
                 street_index, plot_index
             )
             return House(
@@ -55,10 +60,11 @@ class NeighbourhoodDisplay(ActiveBox):
             return None
 
         try:
-            self.neighbourhood.place_house(street_index, plot_index, house)
+            self.player.place_house(street_index, plot_index, house)
             plot = self.streets[street_index].plots[plot_index]
             plot.definition = replace(plot.definition, text=str(house))
             plot.update_label()
+            self.streets[street_index].update()
         except FlipvilleError:
             # If we didn't successfully place it, then keep player input state
             # so they can try a different plot.

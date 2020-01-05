@@ -189,7 +189,7 @@ class Street:
                 self.place_fence(plot_no + 1)
 
         self.houses[plot_no] = house
-        if house.has_park:
+        if house.has_park and self.num_parks < len(self.definition.park_scoring) - 1:
             self.num_parks += 1
 
     def fence_to_left_of_plot(self, plot_no: int) -> bool:

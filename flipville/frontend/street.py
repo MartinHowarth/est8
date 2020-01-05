@@ -12,6 +12,7 @@ from shimmer.display.widgets.text_box import TextBoxDefinition, TextBox
 from ..backend.house import House
 from ..backend.street import Street
 from .input_handler import InputHandler
+from .score_displays import ParkDisplay
 
 
 class StreetDisplay(BoxRow):
@@ -29,6 +30,17 @@ class StreetDisplay(BoxRow):
         self.street_index: int = street_index
         self.plots = self._create_empty_plots(self.street.definition.num_houses)
         super(StreetDisplay, self).__init__(self.plots, spacing=self.spacing)
+
+        self.park_display = ParkDisplay(self.street.definition.park_scoring)
+        park_x = (
+            self.bounding_rect_of_children().width
+            - self.park_display.bounding_rect_of_children().width
+        )
+        self.add(self.park_display)
+        self.park_display.position = (
+            park_x,
+            self.plot_size[1] + 10,
+        )
 
     def _create_empty_plots(self, num_plots) -> List[Button]:
         buttons = []
@@ -53,5 +65,8 @@ class StreetDisplay(BoxRow):
 
         return inner
 
-    def on_plot_click(self, plot_index) -> Optional[bool]:
+    def on_plot_click(self, plot_index: int) -> Optional[bool]:
         return self.on_plot_click_callback(self.street_index, plot_index)
+
+    def update(self) -> None:
+        self.park_display.set_parks_obtained(self.street.num_parks)

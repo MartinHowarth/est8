@@ -10,9 +10,7 @@ from flipville.backend.definitions import (
 
 
 def test_street_definition(subtests):
-    defn = StreetDefinition(
-        num_houses=2, pool_locations=(0,), num_parks=1, park_scoring=(0, 2)
-    )
+    defn = StreetDefinition(num_houses=2, pool_locations=(0,), park_scoring=(0, 2))
 
     with subtests.test("Test checking pool locations."):
         assert defn.can_have_pool_at(0) is True

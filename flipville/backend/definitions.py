@@ -110,7 +110,6 @@ class DeckDefinition:
 class StreetDefinition:
     num_houses: int
     pool_locations: Tuple[int, ...]
-    num_parks: int
     park_scoring: Tuple[int, ...]
 
     def can_have_pool_at(self, plot_no: int) -> bool:
@@ -129,21 +128,16 @@ class NeighbourhoodDefinition:
         return cls(
             streets=(
                 StreetDefinition(
-                    num_houses=10,
-                    pool_locations=(2, 6, 7),
-                    num_parks=3,
-                    park_scoring=(0, 2, 4, 10),
+                    num_houses=10, pool_locations=(2, 6, 7), park_scoring=(0, 2, 4, 10),
                 ),
                 StreetDefinition(
                     num_houses=11,
                     pool_locations=(0, 3, 7),
-                    num_parks=4,
                     park_scoring=(0, 2, 4, 6, 14),
                 ),
                 StreetDefinition(
                     num_houses=12,
                     pool_locations=(1, 6, 10),
-                    num_parks=5,
                     park_scoring=(0, 2, 4, 6, 8, 18),
                 ),
             )
