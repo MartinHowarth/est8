@@ -1,0 +1,98 @@
+name: Test
+
+on: [push]
+
+jobs:
+
+  black:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+
+      - run: |
+          poetry run black --check flipville tests
+
+  flake8:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+
+      - run: |
+          poetry run flake8 --count --max-line-length=127 --statistics flipville tests
+
+  mypy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+
+      - run: |
+          poetry run mypy flipville tests
+
+  pydocstyle:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+
+      - run: |
+          poetry run pydocstyle flipville tests
+
+  # Run on windows because it has GL available.
+  pytest-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+
+      - run: |
+          poetry run pytest tests
+        env:
+          SKIP_GUI_TESTS: 1
