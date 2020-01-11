@@ -1,8 +1,8 @@
-class FlipvilleError(Exception):
+class Est8Error(Exception):
     pass
 
 
-class HousePlacementError(FlipvilleError):
+class HousePlacementError(Est8Error):
     pass
 
 
@@ -14,9 +14,9 @@ class RoundaboutPlacementError(HousePlacementError):
     pass
 
 
-class FencePlacementError(FlipvilleError):
+class FencePlacementError(Est8Error):
     pass
 
 
-class InvestmentError(FlipvilleError):
+class InvestmentError(Est8Error):
     pass

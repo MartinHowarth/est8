@@ -1,19 +1,19 @@
 [tool.poetry]
-name = "flipville"
-version = "0.1.0"
-description = "A card flipping village building game."
+name = "est8"
+version = "1.0.0"
+description = "A card-based estate building game."
 authors = ["MartinHowarth <howarth.martin@gmail.com>"]
 license = "MIT"
 readme = 'README.md'
 
-repository = "https://github.com/MartinHowarth/flipville"
-homepage = "https://github.com/MartinHowarth/flipville"
+repository = "https://github.com/MartinHowarth/est8"
+homepage = "https://github.com/MartinHowarth/est8"
 
 [tool.poetry.dependencies]
 python = "^3.8"
 toml = "^0.9"
-#cocos2d = "^0.6.7"
-#shimmer = "^0.1.0"
+cocos2d = "^0.6.7"
+shimmer = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"
@@ -26,7 +26,7 @@ mock = "^3.0.5"
 pytest-mock = "^1.13.0"
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry>=1.0.0"]
 build-backend = "poetry.masonry.api"
 
 [tool.pytest]

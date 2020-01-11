@@ -1,8 +1,8 @@
 import cocos
 import sys
 
-from flipville.backend.definitions import GameDefinition
-from flipville.frontend.game import GameDisplay
+from est8.backend.definitions import GameDefinition
+from est8.frontend.game import GameDisplay
 
 
 def main():

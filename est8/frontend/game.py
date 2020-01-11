@@ -1,10 +1,10 @@
-from flipville.backend.player import Player
-from flipville.backend.definitions import GameDefinition
-from flipville.backend.neighbourhood import Neighbourhood
-from flipville.frontend.input_handler import InputHandler
-from flipville.frontend.neighbourhood import NeighbourhoodDisplay
-from flipville.frontend.deck import FreeChoiceDeckDisplay, RandomDeckDisplay
-from flipville.frontend.score_displays import ParkDisplay
+from est8.backend.player import Player
+from est8.backend.definitions import GameDefinition
+from est8.backend.neighbourhood import Neighbourhood
+from est8.frontend.input_handler import InputHandler
+from est8.frontend.neighbourhood import NeighbourhoodDisplay
+from est8.frontend.deck import FreeChoiceDeckDisplay, RandomDeckDisplay
+from est8.frontend.score_displays import ParkDisplay
 
 from shimmer.display.components.box import Box
 

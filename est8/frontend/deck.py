@@ -93,12 +93,14 @@ class RandomDeckDisplay(Box):
         self.card_displays = self._create_card_displays()
         card_displays_definition = MultipleChoiceButtonsDefinition(
             question=MultipleChoiceQuestionDefinition(
-                text="", choices=self.card_displays, on_select=self.on_card_chosen
+                text="", choices=self.card_displays, on_select=self.on_card_chosen,
             ),
             button=ButtonDefinition(
                 base_color=Color(0, 0, 0, 0),
                 hover_color=Color(0, 0, 200, 200),
                 depressed_color=Color(0, 150, 0, 100),
+                width=self.card_displays[0].rect.width,
+                height=self.card_displays[0].rect.height,
             ),
         )
         self.card_display_layout = MultipleChoiceButtons(card_displays_definition)

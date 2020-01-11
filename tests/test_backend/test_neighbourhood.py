@@ -1,9 +1,9 @@
 import pytest
 
-from flipville.backend.errors import HousePlacementError
-from flipville.backend.definitions import NeighbourhoodDefinition
-from flipville.backend.neighbourhood import Neighbourhood
-from flipville.backend.house import House
+from est8.backend.errors import HousePlacementError
+from est8.backend.definitions import NeighbourhoodDefinition
+from est8.backend.neighbourhood import Neighbourhood
+from est8.backend.house import House
 
 
 @pytest.fixture()

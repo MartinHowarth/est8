@@ -1,8 +1,8 @@
 from enum import Enum, auto
 from typing import Optional
 
-from shimmer.display.data_structures import (
-    Color,
+from shimmer.display.data_structures import Color
+from shimmer.display.alignment import (
     HorizontalAlignment,
     VerticalAlignment,
 )
@@ -25,6 +25,7 @@ class CardDisplay(Box):
             BoxDefinition(
                 width=self.size[0],
                 height=self.size[1],
+                dynamic_size=False,
                 background_color=Color(40, 40, 40),
             )
         )
@@ -62,7 +63,8 @@ class CardPairDisplay(Box):
         self.add(self.action_card_display, z=-1)
 
         child_boundary_rect = self.bounding_rect_of_children()
-        self.set_size(
+        # TODO don't use set size
+        self._set_size(
             width=child_boundary_rect.width, height=child_boundary_rect.height
         )
 

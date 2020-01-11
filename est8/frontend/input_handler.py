@@ -1,7 +1,7 @@
 from typing import Optional, List, Callable, Tuple
 
-from flipville.backend.definitions import CardPair, GameDefinition
-from flipville.backend.house import House
+from est8.backend.definitions import CardPair, GameDefinition
+from est8.backend.house import House
 
 
 class InputHandler:

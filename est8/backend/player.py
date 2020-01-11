@@ -1,13 +1,13 @@
 from dataclasses import dataclass, field
 from typing import Dict, Tuple, List, Optional
 
-from flipville.backend.errors import (
+from est8.backend.errors import (
     InvestmentError,
     RoundaboutPlacementError,
 )
-from flipville.backend.definitions import GameDefinition
-from flipville.backend.neighbourhood import Neighbourhood
-from flipville.backend.house import House
+from est8.backend.definitions import GameDefinition
+from est8.backend.neighbourhood import Neighbourhood
+from est8.backend.house import House
 
 
 @dataclass

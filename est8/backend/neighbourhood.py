@@ -2,10 +2,10 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import List
 
-from flipville.backend.errors import HousePlacementError, FencePlacementError
-from flipville.backend.definitions import NeighbourhoodDefinition
-from flipville.backend.house import House
-from flipville.backend.street import Street
+from est8.backend.errors import HousePlacementError, FencePlacementError
+from est8.backend.definitions import NeighbourhoodDefinition
+from est8.backend.house import House
+from est8.backend.street import Street
 
 
 @dataclass

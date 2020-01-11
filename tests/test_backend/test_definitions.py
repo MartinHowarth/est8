@@ -1,4 +1,4 @@
-from flipville.backend.definitions import (
+from est8.backend.definitions import (
     NeighbourhoodDefinition,
     DeckDefinition,
     CardDefinition,

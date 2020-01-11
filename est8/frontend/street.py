@@ -1,6 +1,8 @@
 from typing import Optional, Callable, List
 
+from shimmer.display.components.box import Box, BoxDefinition
 from shimmer.display.components.box_layout import BoxLayoutDefinition, BoxRow
+from shimmer.display.alignment import HorizontalAlignment, VerticalAlignment
 from shimmer.display.widgets.button import ButtonDefinition, Button
 from shimmer.display.widgets.multiple_choice_buttons import (
     MultipleChoiceButtons,
@@ -15,7 +17,7 @@ from .input_handler import InputHandler
 from .score_displays import ParkDisplay
 
 
-class StreetDisplay(BoxRow):
+class StreetDisplay(Box):
     plot_size = 60, 100
     spacing = 20
 
@@ -25,22 +27,27 @@ class StreetDisplay(BoxRow):
         street_index: int,
         on_plot_click_callback: Callable[[int, int], Optional[bool]],
     ):
+        super(StreetDisplay, self).__init__()
+
         self.on_plot_click_callback = on_plot_click_callback
         self.street: Street = street
         self.street_index: int = street_index
         self.plots = self._create_empty_plots(self.street.definition.num_houses)
-        super(StreetDisplay, self).__init__(self.plots, spacing=self.spacing)
-
+        self.plot_layout = BoxRow(self.plots, spacing=self.spacing)
+        self.add(self.plot_layout)
         self.park_display = ParkDisplay(self.street.definition.park_scoring)
-        park_x = (
-            self.bounding_rect_of_children().width
-            - self.park_display.bounding_rect_of_children().width
+        self.park_display.set_position_in_alignment_with(
+            self, align_x=HorizontalAlignment.right
         )
-        self.add(self.park_display)
+        # park_x = (
+        #     self.plot_layout.rect.width
+        #     - self.park_display.rect.width
+        # )
         self.park_display.position = (
-            park_x,
+            self.park_display.x,
             self.plot_size[1] + 10,
         )
+        self.add(self.park_display)
 
     def _create_empty_plots(self, num_plots) -> List[Button]:
         buttons = []
@@ -61,12 +68,9 @@ class StreetDisplay(BoxRow):
 
     def _create_on_plot_click_callback(self, plot_index) -> Callable:
         def inner(*_, **__):
-            return self.on_plot_click(plot_index)
+            return self.on_plot_click_callback(self.street_index, plot_index)
 
         return inner
 
-    def on_plot_click(self, plot_index: int) -> Optional[bool]:
-        return self.on_plot_click_callback(self.street_index, plot_index)
-
     def update(self) -> None:
-        self.park_display.set_parks_obtained(self.street.num_parks)
+        self.park_display.set_score_obtained(self.street.num_parks)

@@ -2,11 +2,15 @@ name: Test
 
 on: [push]
 
+env:
+  TEST_DIRS: "tests"
+  LINT_DIRS: "est8 tests"
+
 jobs:
 
   black:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python 3.8
@@ -14,17 +18,21 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Install dependencies
-        run: |
-          pip install poetry
-          poetry install
+      - name: Install poetry
+        uses: dschep/install-poetry-action@v1.3
+        with:
+          version: 1.0.0
+          create_virtualenvs: true
 
-      - run: |
-          poetry run black --check flipville tests
+      - name: Install requirements
+        run: poetry install
+
+      - name: Run pydocstyle
+        run: poetry run black --check ${LINT_DIRS}
 
   flake8:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python 3.8
@@ -32,17 +40,21 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Install dependencies
-        run: |
-          pip install poetry
-          poetry install
+      - name: Install poetry
+        uses: dschep/install-poetry-action@v1.3
+        with:
+          version: 1.0.0
+          create_virtualenvs: true
 
-      - run: |
-          poetry run flake8 --count --max-line-length=127 --statistics flipville tests
+      - name: Install requirements
+        run: poetry install
+
+      - name: Run pydocstyle
+        run: poetry run flake8 --count --max-line-length=127 --statistics ${LINT_DIRS}
 
   mypy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python 3.8
@@ -50,35 +62,20 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Install dependencies
-        run: |
-          pip install poetry
-          poetry install
+      - name: Install poetry
+        uses: dschep/install-poetry-action@v1.3
+        with:
+          version: 1.0.0
+          create_virtualenvs: true
 
-      - run: |
-          poetry run mypy flipville tests
+      - name: Install requirements
+        run: poetry install
+
+      - name: Run pydocstyle
+        run: poetry run mypy ${LINT_DIRS}
 
   pydocstyle:
     runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.8
-
-      - name: Install dependencies
-        run: |
-          pip install poetry
-          poetry install
-
-      - run: |
-          poetry run pydocstyle flipville tests
-
-  # Run on windows because it has GL available.
-  pytest-windows:
-    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v1
@@ -87,12 +84,43 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Install dependencies
-        run: |
-          pip install poetry
-          poetry install
+      - name: Install poetry
+        uses: dschep/install-poetry-action@v1.3
+        with:
+          version: 1.0.0
+          create_virtualenvs: true
 
-      - run: |
-          poetry run pytest tests
+      - name: Install requirements
+        run: poetry install
+
+      - name: Run pydocstyle
+        run: poetry run pydocstyle ${LINT_DIRS}
+
+  pytest:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-18.04]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Install poetry
+        uses: dschep/install-poetry-action@v1.3
+        with:
+          version: 1.0.0
+          create_virtualenvs: true
+
+      - name: Install requirements
+        run: poetry install
+
+      - name: Run pytest
+        run: poetry run pytest ${TEST_DIRS}
         env:
           SKIP_GUI_TESTS: 1

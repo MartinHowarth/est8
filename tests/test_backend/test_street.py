@@ -2,14 +2,14 @@
 
 import pytest
 
-from flipville.backend.errors import (
+from est8.backend.errors import (
     FencePlacementError,
     HousePlacementError,
     BisPlacementError,
 )
-from flipville.backend.definitions import NeighbourhoodDefinition
-from flipville.backend.house import House
-from flipville.backend.street import Street
+from est8.backend.definitions import NeighbourhoodDefinition
+from est8.backend.house import House
+from est8.backend.street import Street
 
 
 @pytest.fixture()

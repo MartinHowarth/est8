@@ -5,7 +5,7 @@ from typing import List, Optional
 
 from shimmer.display.components.box import ActiveBox
 
-from ..backend.errors import FlipvilleError
+from ..backend.errors import Est8Error
 from ..backend.definitions import ActionEnum
 from ..backend.player import Player
 from ..backend.house import House
@@ -65,7 +65,7 @@ class NeighbourhoodDisplay(ActiveBox):
             plot.definition = replace(plot.definition, text=str(house))
             plot.update_label()
             self.streets[street_index].update()
-        except FlipvilleError:
+        except Est8Error:
             # If we didn't successfully place it, then keep player input state
             # so they can try a different plot.
             log.info(f"Cannot place house {house} at {street_index=}, {plot_index=})")

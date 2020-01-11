@@ -4,10 +4,10 @@ import pytest
 
 from mock import MagicMock
 
-from flipville.backend.errors import RoundaboutPlacementError, InvestmentError
-from flipville.backend.definitions import GameDefinition
-from flipville.backend.house import House
-from flipville.backend.player import Player
+from est8.backend.errors import RoundaboutPlacementError, InvestmentError
+from est8.backend.definitions import GameDefinition
+from est8.backend.house import House
+from est8.backend.player import Player
 
 
 @pytest.fixture()

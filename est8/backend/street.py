@@ -3,13 +3,13 @@
 from dataclasses import dataclass
 from typing import List, Tuple, Optional
 
-from flipville.backend.errors import (
+from est8.backend.errors import (
     HousePlacementError,
     BisPlacementError,
     FencePlacementError,
 )
-from flipville.backend.definitions import StreetDefinition
-from flipville.backend.house import House
+from est8.backend.definitions import StreetDefinition
+from est8.backend.house import House
 
 
 @dataclass
