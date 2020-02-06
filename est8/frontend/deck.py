@@ -44,9 +44,7 @@ class FreeChoiceDeckDisplay(Box):
         buttons = []
         for index, action in enumerate(ActionEnum):
             defn = ButtonDefinition(
-                dynamic_size=True,
-                text=str(action),
-                on_press=self._make_on_action_click_callback(action),
+                text=str(action), on_press=self._make_on_action_click_callback(action),
             )
             buttons.append(Button(defn))
         layout = BoxRow(buttons)
@@ -67,16 +65,16 @@ class FreeChoiceDeckDisplay(Box):
     def on_number_click(self, number: int) -> bool:
         self._last_number = number
         self.input_handler.chosen_card_pair = CardPair(
-            CardDefinition(self._last_number, action=self._last_action),
-            CardDefinition(self._last_number, action=self._last_action),
+            CardDefinition(number=self._last_number, action=self._last_action),
+            CardDefinition(number=self._last_number, action=self._last_action),
         )
         return True
 
     def on_action_click(self, action: ActionEnum) -> bool:
         self._last_action = action
         self.input_handler.chosen_card_pair = CardPair(
-            CardDefinition(self._last_number, action=self._last_action),
-            CardDefinition(self._last_number, action=self._last_action),
+            CardDefinition(number=self._last_number, action=self._last_action),
+            CardDefinition(number=self._last_number, action=self._last_action),
         )
         return True
 
