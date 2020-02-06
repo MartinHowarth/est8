@@ -1,7 +1,6 @@
 from typing import Optional, List, Callable, Tuple
 
 from est8.backend.definitions import CardPair, GameDefinition
-from est8.backend.house import House
 
 
 class InputHandler:

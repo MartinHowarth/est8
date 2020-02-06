@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import List
 
-from est8.backend.errors import HousePlacementError, FencePlacementError
 from est8.backend.definitions import NeighbourhoodDefinition
+from est8.backend.errors import HousePlacementError, FencePlacementError
 from est8.backend.house import House
 from est8.backend.street import Street
 

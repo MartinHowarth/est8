@@ -3,12 +3,12 @@
 from dataclasses import dataclass
 from typing import List, Tuple, Optional
 
+from est8.backend.definitions import StreetDefinition
 from est8.backend.errors import (
     HousePlacementError,
     BisPlacementError,
     FencePlacementError,
 )
-from est8.backend.definitions import StreetDefinition
 from est8.backend.house import House
 
 

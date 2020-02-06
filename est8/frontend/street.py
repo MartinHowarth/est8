@@ -1,20 +1,11 @@
 from typing import Optional, Callable, List
 
-from shimmer.display.components.box import Box, BoxDefinition
-from shimmer.display.components.box_layout import BoxLayoutDefinition, BoxRow
-from shimmer.display.alignment import HorizontalAlignment, VerticalAlignment
+from shimmer.display.alignment import RightBottom, RightTop
+from shimmer.display.components.box import Box
+from shimmer.display.components.box_layout import BoxRow
 from shimmer.display.widgets.button import ButtonDefinition, Button
-from shimmer.display.widgets.multiple_choice_buttons import (
-    MultipleChoiceButtons,
-    MultipleChoiceButtonsDefinition,
-    MultipleChoiceQuestionDefinition,
-)
-from shimmer.display.widgets.text_box import TextBoxDefinition, TextBox
-
-from ..backend.house import House
-from ..backend.street import Street
-from .input_handler import InputHandler
 from .score_displays import ParkDisplay
+from ..backend.street import Street
 
 
 class StreetDisplay(Box):
@@ -36,18 +27,10 @@ class StreetDisplay(Box):
         self.plot_layout = BoxRow(self.plots, spacing=self.spacing)
         self.add(self.plot_layout)
         self.park_display = ParkDisplay(self.street.definition.park_scoring)
-        self.park_display.set_position_in_alignment_with(
-            self, align_x=HorizontalAlignment.right
-        )
-        # park_x = (
-        #     self.plot_layout.rect.width
-        #     - self.park_display.rect.width
-        # )
-        self.park_display.position = (
-            self.park_display.x,
-            self.plot_size[1] + 10,
-        )
         self.add(self.park_display)
+        self.park_display.align_anchor_with_other_anchor(
+            self, other_anchor=RightTop, self_anchor=RightBottom, spacing=(0, 15)
+        )
 
     def _create_empty_plots(self, num_plots) -> List[Button]:
         buttons = []

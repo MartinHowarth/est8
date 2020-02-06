@@ -1,11 +1,18 @@
-import cocos
+import logging
 import sys
 
+import cocos
 from est8.backend.definitions import GameDefinition
 from est8.frontend.game import GameDisplay
 
 
+def setup_logging():
+    logging.basicConfig(level=logging.DEBUG)
+
+
 def main():
+    setup_logging()
+
     director = cocos.director.director
     director.init(width=1400, height=800)
     director.window.position = 100, 100

@@ -1,18 +1,17 @@
-from typing import Callable, List, Optional, Tuple
+from typing import Callable, List, Tuple
 
-from shimmer.display.data_structures import Color
 from shimmer.display.components.box import Box
 from shimmer.display.components.box_layout import BoxRow
+from shimmer.display.data_structures import Color
 from shimmer.display.widgets.button import Button, ButtonDefinition
 from shimmer.display.widgets.multiple_choice_buttons import (
     MultipleChoiceButtonsDefinition,
     MultipleChoiceButtons,
     MultipleChoiceQuestionDefinition,
 )
-
-from ..backend.definitions import ActionEnum, CardDefinition, CardPair, GameDefinition
-from .input_handler import InputHandler
 from .card import CardPairDisplay
+from .input_handler import InputHandler
+from ..backend.definitions import ActionEnum, CardDefinition, CardPair, GameDefinition
 
 
 class FreeChoiceDeckDisplay(Box):

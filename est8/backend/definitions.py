@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 from random import choice, shuffle
-from typing import Tuple, Dict, Iterable, Optional, Generator
+from typing import Tuple, Dict, Iterable, Generator
 
 
 class ActionEnum(Enum):

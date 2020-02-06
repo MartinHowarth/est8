@@ -1,19 +1,14 @@
 import logging
-
 from dataclasses import replace
 from typing import List, Optional
 
 from shimmer.display.components.box import ActiveBox
-
-from ..backend.errors import Est8Error
-from ..backend.definitions import ActionEnum
-from ..backend.player import Player
-from ..backend.house import House
-from ..backend.neighbourhood import Neighbourhood
-from .street import StreetDisplay
 from .input_handler import InputHandler
-from .deck import RandomDeckDisplay
-
+from .street import StreetDisplay
+from ..backend.definitions import ActionEnum
+from ..backend.errors import Est8Error
+from ..backend.house import House
+from ..backend.player import Player
 
 log = logging.getLogger(__name__)
 
